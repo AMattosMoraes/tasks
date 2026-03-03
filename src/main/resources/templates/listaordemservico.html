@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head><title>Lista de Ordem de Serviço</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h1 class="text-end">Lista de Ordem de Serviço</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Setor</th>
+                <th>Status</th>
+                <th>Dt Cadastro</th>
+                <th>Cliente</th>
+                <th>Prioridade</th>
+                <th>Ordem</th>
+                <th>Sistema</th>
+                <th>Modulo</th>
+                <th>Responsavel</th>
+                <th>Usuario</th>
+                <th>Titulo</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ordemservico : ${listaordemservico}">
+            <td th:text="${ordemservico.id}"></td>
+            <td th:text="${ordemservico.setor}"></td>
+            <td th:text="${ordemservico.ordemstatus}"></td>
+            <td th:text="${ordemservico.dtcadastro}"></td>
+            <td th:text="${ordemservico.cliente}"></td>
+            <td th:text="${ordemservico.prioridade}"></td>
+            <td th:text="${ordemservico.ordem}"></td>
+            <td th:text="${ordemservico.sistema}"></td>
+            <td th:text="${ordemservico.modulo}"></td>
+            <td th:text="${ordemservico.responsavel}"></td>
+            <td th:text="${ordemservico.usuario}"></td>
+            <td th:text="${ordemservico.titulo}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

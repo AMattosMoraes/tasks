@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Módulo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    span {
+        font-family: Calibri;
+    }
+
+    .table-personal {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .navbar-blue-per {
+        background-color: #052C65;
+    }
+
+    h2 {
+        letter-spacing: 2px;
+        word-spacing: 6px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    .form-control, .form-select, textarea {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .form-control:focus, .form-select:focus, textarea:focus {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-color: #0d6efd;
+    }
+
+</style>
+<body class="container py-5">
+
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-blue-per fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand align-items-center" href="#"><span> Sistema de Controle de Tarefas </span></a>
+    </div>
+</nav>
+
+<h2 class="text-center mt-5 mb-5"> Editar Módulo </h2>
+
+<form th:action="@{/atualizarmodulo/{id}(id=${modulo.id})}"
+      th:object="${modulo}"
+      method="post"
+      class="form-container border rounded shadow row g-2 needs-validation" novalidate>
+
+    <!--Nome do Sistema-->
+    <div class="col-md-6">
+        <label for="descsistema" class="form-label">Sistema</label>
+        <select type="text" class="form-select" id="descsistema" th:field="*{descsistema}" readonly>
+            <option value="X" disabled selected
+                    th:each="modulo : ${modulo}"
+                    th:value="${modulo.descsistema}"
+                    th:text="${modulo.descsistema}">
+            </option>
+        </select>
+
+<!--        <input type="text" class="form-control" th:field="*{descsistema}" readonly>-->
+    </div>
+
+    <!--Nome do Modulo-->
+    <div class="col-md-6">
+        <label for="descmodulo" class="form-label">Modulo</label>
+        <input type="text" class="form-control" th:field="*{descmodulo}" onfocus>
+    </div>
+
+    <!-- Botões -->
+    <div class="col-12 d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Salvar</button>
+        <button type="reset" class="btn btn-danger m-2"><i class="bi bi-x-circle m-2"></i> Limpar</button>
+        <a th:href="@{/listamodulo}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
+    </div>
+</form>
+
+<!-- Rodapé -->
+<div th:insert="fragments/footer :: footer"></div>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Script para ativar validação Bootstrap
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
+</body>
+</html>
