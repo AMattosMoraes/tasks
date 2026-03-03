@@ -57,14 +57,14 @@
     <!--Nome do Sistema-->
     <div class="col-md-6">
         <label for="descsistema" class="form-label">Sistema</label>
-<!--        <select type="text" class="form-select" id="descsistema" th:field="*{descsistema}" readonly>-->
-<!--            <option value="X" disabled selected-->
-<!--                    th:each="modulo : ${modulo}"-->
-<!--                    th:value="${modulo.descsistema}"-->
-<!--                    th:text="${modulo.descsistema}">-->
-<!--            </option>-->
-<!--        </select>-->
-        <input type="text" class="form-control" th:field="*{descsistema}" readonly>
+        <select type="text" class="form-select" id="descsistema" th:field="*{descsistema}" readonly>
+            <option value="X" disabled selected
+                    th:each="modulo : ${modulo}"
+                    th:value="${modulo.descsistema}"
+                    th:text="${modulo.descsistema}">
+            </option>
+        </select>
+<!--        <input type="text" class="form-control" th:field="*{descsistema}" readonly>-->
     </div>
 
     <!--Nome do Modulo-->
