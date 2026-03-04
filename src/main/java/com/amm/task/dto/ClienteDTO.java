@@ -13,9 +13,7 @@ public class ClienteDTO {
     private String contato;
     private String info;
 
-    public ClienteDTO(){
-
-    }
+    public ClienteDTO(Cliente cliente){}
 
     public ClienteDTO(Long id, String cnpj, String nome, String uf, String contato, String info) {
         this.id = id;
@@ -24,6 +22,17 @@ public class ClienteDTO {
         this.uf = uf;
         this.contato = contato;
         this.info = info;
+    }
+
+    public static ClienteDTO fromEntity(Cliente cliente){
+        return new ClienteDTO(
+                cliente.getId(),
+                cliente.getCnpj(),
+                cliente.getNome(),
+                cliente.getUf(),
+                cliente.getContato(),
+                cliente.getInfo()
+        );
     }
 
     public Long getId() {
@@ -97,16 +106,5 @@ public class ClienteDTO {
                 ", contato='" + contato + '\'' +
                 ", info='" + info + '\'' +
                 '}';
-    }
-
-    public static ClienteDTO fromEntity(Cliente cliente){
-     return new ClienteDTO(
-             cliente.getId(),
-             cliente.getCnpj(),
-             cliente.getNome(),
-             cliente.getUf(),
-             cliente.getContato(),
-             cliente.getInfo()
-     );
     }
 }

@@ -1,46 +1,124 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Ordem de Serviço</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        span {
+            font-family: Calibri;
+        }
 
-<html xmlns:th="http://www.thymeleaf.org">
+        .table-personal {
+            background-color: #6c757d;
+            color: white;
+        }
 
-<head><title>Lista de Ordem de Serviço</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        .navbar-blue-per {
+            background-color: #052C65;
+        }
+
+        h2 {
+            letter-spacing: 2px;
+            word-spacing: 6px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        table{
+            font-size: smaller;
+        }
+    </style>
 </head>
-<body class="container mt-5">
-    <h1 class="text-end">Lista de Ordem de Serviço</h1>
-    <table class="table table-striped">
-        <thead>
+<body class="container py-5">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-blue-per fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand align-items-center" href="#">
+            <span> Sistema de Controle de Tarefas </span>
+        </a>
+        <div class="d-flex">
+            <a href="/cadastroordemservico" class="btn btn-primary me-2"><i class="bi bi-people-fill me-2"></i> Cadastrar Ordem de Serviço </a>
+            <a href="/" class="btn btn-secondary"><i class="bi bi-menu-up me-2"></i> Menu Principal </a>
+        </div>
+    </div>
+</nav>
+<div class="container vh-100">
+
+    <h2 class="text-center mt-5 mb5"> Lista de Ordem de Serviço </h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle border rounded shadow">
+            <thead class="table-personal">
             <tr>
                 <th>ID</th>
-                <th>Setor</th>
                 <th>Status</th>
                 <th>Dt Cadastro</th>
                 <th>Cliente</th>
                 <th>Prioridade</th>
-                <th>Ordem</th>
                 <th>Sistema</th>
                 <th>Modulo</th>
-                <th>Responsavel</th>
-                <th>Usuario</th>
-                <th>Titulo</th>
+                <th class="text-center"> Ações </th>
             </tr>
-        </thead>
-        <tbody>
-        <tr th:each="ordemservico : ${listaordemservico}">
-            <td th:text="${ordemservico.id}"></td>
-            <td th:text="${ordemservico.setor}"></td>
-            <td th:text="${ordemservico.ordemstatus}"></td>
-            <td th:text="${ordemservico.dtcadastro}"></td>
-            <td th:text="${ordemservico.cliente}"></td>
-            <td th:text="${ordemservico.prioridade}"></td>
-            <td th:text="${ordemservico.ordem}"></td>
-            <td th:text="${ordemservico.sistema}"></td>
-            <td th:text="${ordemservico.modulo}"></td>
-            <td th:text="${ordemservico.responsavel}"></td>
-            <td th:text="${ordemservico.usuario}"></td>
-            <td th:text="${ordemservico.titulo}"></td>
-        </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr th:each="ordemservico : ${listaordemservico}">
+                <td th:text="${ordemservico.id}"></td>
+                <td th:text="${ordemservico.ordemstatus}"></td>
+                <td th:text="${ordemservico.dtcadastro}"></td>
+                <td th:text="${ordemservico.cliente}"></td>
+                <td th:text="${ordemservico.prioridade}"></td>
+                <td th:text="${ordemservico.sistema}"></td>
+                <td th:text="${ordemservico.modulo}"></td>
+                <td class="text-center">
+                    <a th:href="@{/editarordemservico/{id}(id=${ordemservico.id})}" class="btn btn-warning btn-sm me-2">
+                        <i class="bi bi-pencil-square"></i> Editar </a>
+
+                    <a th:href="@{/excluirordemservico/{id}(id=${ordemservico.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Tem certeza que deseja excluir este cliente?');">
+                        <i class="bi bi-trash"></i> Excluir </a>
+                </td>
+            </tbody>
+        </table>
+
+        <span class="text-centermt-5 mb-5 "> Página
+            <span th:text="${currentPage + 1}"></span> de
+            <span th:text="${totalPages}"></span>
+        </span>
+
+        <div class="d-flex justify-content-center align-items-center mt-2">
+            <nav aria-label="Navegação de páginas">
+                <ul class="pagination pagination-sm">
+
+                    <!-- Botão Anterior -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/listacliente(page=${currentPage - 1})}" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- Números das páginas -->
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages -1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/listacliente(page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+
+                    <!-- Botão Próxima -->
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/listacliente(page=${currentPage + 1})}" aria-label="Próxima">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+
+<!-- Rodapé -->
+<div th:insert="fragments/footer :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </body>
 </html>
