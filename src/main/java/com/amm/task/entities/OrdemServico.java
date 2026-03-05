@@ -19,11 +19,10 @@ public class OrdemServico implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String ordemstatus;
-    private Integer setor;
+    private String setor;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd", timezone = "GMT")
     private Instant dtcadastro;
-
     private String cliente;
     private String prioridade;
     private Integer ordem;
@@ -43,10 +42,9 @@ public class OrdemServico implements Serializable {
 
     public OrdemServico(){}
 
-    public OrdemServico(Long id, String ordemstatus, Integer setor, Instant dtcadastro, String cliente,
-                        String prioridade, Integer ordem, String sistema, String modulo, String responsavel,
-                        String usuario, String titulo, String servico, String tiposervico, String analistaresp,
-                        String situacao, Instant dtinicio, Instant hrinicio, Instant dtfinal, Instant hrfinal) {
+    public OrdemServico(Long id, String ordemstatus, String setor, Instant dtcadastro, String cliente, String prioridade,  Integer ordem
+            , String sistema, String modulo, String responsavel, String usuario, String titulo, String servico, String tiposervico,
+              String analistaresp, String situacao, Instant dtinicio, Instant hrinicio, Instant dtfinal, Instant hrfinal) {
         this.id = id;
         this.ordemstatus = ordemstatus;
         this.setor = setor;
@@ -89,11 +87,11 @@ public class OrdemServico implements Serializable {
         this.ordemstatus = ordemstatus;
     }
 
-    public Integer getSetor() {
+    public String getSetor() {
         return setor;
     }
 
-    public void setSetor(Integer setor) {
+    public void setSetor(String setor) {
         this.setor = setor;
     }
 
@@ -238,7 +236,7 @@ public class OrdemServico implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrdemServico that = (OrdemServico) o;
-        return Objects.equals(id, that.id);
+        return id.equals(that.id);
     }
 
     @Override
@@ -250,7 +248,7 @@ public class OrdemServico implements Serializable {
     public String toString() {
         return "OrdemServico{" +
                 "id=" + id +
-                ", Status=" + ordemstatus +
+                ", ordemstatus='" + ordemstatus + '\'' +
                 ", setor=" + setor +
                 ", dtcadastro=" + dtcadastro +
                 ", cliente='" + cliente + '\'' +

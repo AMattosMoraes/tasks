@@ -10,7 +10,7 @@ public class OrdemServicoDTO {
 
     private Long id;
     private String ordemstatus;
-    private Integer setor;
+    private String setor;
     private Instant dtcadastro;
     private String cliente;
     private String prioridade;
@@ -31,7 +31,10 @@ public class OrdemServicoDTO {
 
     public OrdemServicoDTO(){}
 
-    public OrdemServicoDTO(Long id, String ordemstatus, Integer setor, Instant dtcadastro, String cliente, String prioridade, Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo, String servico, String tiposervico, String analistaresp, String situacao, Instant dtinicio, Instant hrinicio, Instant dtfinal, Instant hrfinal) {
+    public OrdemServicoDTO(Long id, String ordemstatus, String setor, Instant dtcadastro, String cliente, String prioridade,
+                           Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo,
+                           String servico, String tiposervico, String analistaresp, String situacao, Instant dtinicio,  Instant hrinicio,
+                           Instant dtfinal, Instant hrfinal) {
         this.id = id;
         this.ordemstatus = ordemstatus;
         this.setor = setor;
@@ -95,11 +98,11 @@ public class OrdemServicoDTO {
         this.ordemstatus = ordemstatus;
     }
 
-    public Integer getSetor() {
+    public String getSetor() {
         return setor;
     }
 
-    public void setSetor(Integer setor) {
+    public void setSetor(String setor) {
         this.setor = setor;
     }
 

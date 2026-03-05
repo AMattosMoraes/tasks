@@ -1,7 +1,9 @@
 package com.amm.task.controller;
 
 import com.amm.task.entities.OrdemServico;
+import com.amm.task.repositories.ClienteRepository;
 import com.amm.task.repositories.OrdemServicoRepository;
+import com.amm.task.repositories.SistemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,13 +17,21 @@ public class OrdemServicoController {
     @Autowired
     private final OrdemServicoRepository ordemServicoRepository;
 
+    @Autowired
+    private SistemaRepository sistemaRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     public OrdemServicoController(OrdemServicoRepository ordemServicoRepository) {
         this.ordemServicoRepository = ordemServicoRepository;
     }
 
-    @GetMapping("*/cadastroordemservico")
+    @GetMapping("/cadastroordemservico")
     public String mostrarFormulario(Model model){
         model.addAttribute("ordemservico", new OrdemServico());
+        model.addAttribute("sistema", sistemaRepository.findAll());
+        model.addAttribute("cliente", clienteRepository.findAll());
         return "cadastroordemservico";
     }
 
@@ -38,13 +48,13 @@ public class OrdemServicoController {
         return "listaordemservico";
     }
 
-    @PostMapping("*/salvarordemservico")
+    @PostMapping("/salvarordemservico")
     public String salvarOrdemServico(@ModelAttribute OrdemServico ordemServico){
         ordemServicoRepository.save(ordemServico);
-        return "redirect/listaordemservico";
+        return "redirect:/listaordemservico";
     }
 
-    @GetMapping("*/editarordemservico/{id}")
+    @GetMapping("/editarordemservico/{id}")
     public String editarOrdemServico(Model model, @PathVariable("id") Long id){
         OrdemServico ordemServico = ordemServicoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ordem de Serviço não encontrada" + id));
