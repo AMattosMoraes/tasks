@@ -75,11 +75,27 @@
     <div class="container-custom border rounded mx-auto">
         <div class="row">
             <h2></h2>
+
+            <!-- Data de Cadastro Invisivel-->
+            <input type="hidden" id="dtcadastro" name="dtcadastro">
+
+            <!-- Ordem Status Invisivel-->
+            <input type="hidden" id="ordemstatus" name="ordemstatus" th:value="Aberto">
+
+            <!-- Ordem Status Invisivel-->
+            <input type="hidden" id="ordem" name="ordem" th:value="1">
+
+            <!-- Responsavel Invisivel-->
+            <input type="hidden" id="responsavel" name="responsavel" th:value="Alexandre">
+
+            <!-- Usuario Invisivel-->
+            <input type="hidden" id="usuario" name="usuario" th:value="Alexandre">
+
             <!--Nome do Cliente-->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="cliente" class="form-label">Cliente</label>
                 <select class="form-select" id="cliente" name="cliente" required>
-                    <option value="" disabled selected>Selecione</option>
+                    <option value="" disabled selected>Selecione...</option>
                     <option th:each="c : ${cliente}" th:value="${c.nome}" th:text="${c.nome}"></option>
                 </select>
                 <div class="invalid-feedback">Informe um Cliente.</div>
@@ -89,11 +105,30 @@
             <div class="col-md-6">
                 <label for="sistema" class="form-label">Sistema</label>
                 <select class="form-select" id="sistema" name="sistema" required>
-                    <option value="" disabled selected>Selecione</option>
+                    <option value="" disabled selected>Selecione...</option>
                     <option th:each="s : ${sistema}" th:value="${s.nome}" th:text="${s.nome}"></option>
                 </select>
                 <div class="invalid-feedback">Informe um Sistema.</div>
             </div>
+
+            <!--Nome do Modulo-->
+            <div class="col-md-6">
+                <label for="modulo" class="form-label">Modulo</label>
+                <select class="form-select" id="modulo" name="modulo" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option th:each="m : ${modulo}" th:value="${m.descmodulo}" th:text="${m.descmodulo}"></option>
+                </select>
+                <div class="invalid-feedback">Informe um Modulo.</div>
+            </div>
+
+            <!--Nome do Módulo (dependente do Sistema)-->
+<!--            <div class="col-md-6">-->
+<!--                <label for="modulo" class="form-label">Módulo</label>-->
+<!--                <select class="form-select" id="modulo" name="modulo" required>-->
+<!--                    <option value="" disabled selected>Selecione um sistema primeiro</option>-->
+<!--                </select>-->
+<!--                <div class="invalid-feedback">Informe um Módulo.</div>-->
+<!--            </div>-->
 
             <!-- Titulo do Serviço -->
             <div class="col-md-6">
@@ -101,81 +136,45 @@
                 <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Digite um Titulo">
             </div>
 
-            <!-- Data de Cadastro Visivel-->
-<!--            <div class="col-md-6">-->
-<!--                <label for="dtcadastro" class="form-label">Data de Cadastro</label>-->
-<!--                <input type="date" class="form-control" id="dtcadastro" name="dtcadastro" required>-->
-<!--                <div class="invalid-feedback">Informe a Data de Cadastro.</div>-->
-<!--            </div>-->
-
-            <!-- Data de Cadastro Invisivel-->
-            <input type="hidden" id="dtcadastro" name="dtcadastro">
+            <!-- Serviço -->
+            <div class="col-md-12">
+                <label for="servico" class="form-label" >Descrição do Serviço</label>
+                <textarea class="form-control" id="servico" nome="servico" rows="5"
+                          placeholder="Campo para descrição do serviço"></textarea>
+            </div>
             <h2></h2>
         </div>
     </div>
 
     <div class="container-check text-center align-items-center border rounded mx-auto">
         <div class="row">
-            <!-- Ordem Status -->
-            <div class="col-md-12">
-                <h3></h3>
-                <label for="ordemstatus" class="form-label">Status</label>
-                <div th:field="*{ordemstatus}">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="osAberto" value="Aberto" name="ordemstatus"
-                               required>
-                        <label class="form-check-label" for="osAberto">Aberto</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="osCorrecao" value="Correcao" name="ordemstatus"
-                               required>
-                        <label class="form-check-label" for="osCorrecao">Em Correção</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="osTeste" value="Teste" name="ordemstatus"
-                               required>
-                        <label class="form-check-label" for="osTeste">Em Teste</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="osSuspenso" value="Suspenso" name="ordemstatus"
-                               required>
-                        <label class="form-check-label" for="osSuspenso">Suspenso</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="osConcluido" value="Concluido" name="ordemstatus"
-                               required>
-                        <label class="form-check-label" for="osConcluido">Concluido</label>
-                    </div>
-                    <h3></h3>
-                </div>
-                <div class="invalid-feedback">Informe um Status.</div>
-            </div>
+            <h2></h2>
 
             <!--Setor-->
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <label for="setor" class="form-label"> Setor </label>
-                <div th:field="*{setor}">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="sAdministrativo" value="0" name="setor">
-                        <label class="form-check-label" for="sAdministrativo">Administrativo</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="sProgramacao" value="1" name="setor">
-                        <label class="form-check-label" for="sProgramacao">Programação</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="sSuporte" value="2" name="setor">
-                        <label class="form-check-label" for="sSuporte">Suporte</label>
-                    </div>
-                </div>
+                <select class="form-select" id="setor" name="setor" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="0">Administrativo</option>
+                    <option value="1">Programação</option>
+                    <option value="2">Suporte</option>
+                </select>
                 <div class="invalid-feedback">Informe um Setor.</div>
             </div>
+
+            <!--Prioridade-->
+            <div class="col-md-4">
+                <label for="setor" class="form-label"> Prioridade </label>
+                <select class="form-select" id="prioridade" name="prioridade" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="Baixa">Baixa</option>
+                    <option value="Media">Média</option>
+                    <option value="Alta">Alta</option>
+                </select>
+                <div class="invalid-feedback">Informe um Setor.</div>
+            </div>
+
+            <h2></h2>
         </div>
     </div>
 
@@ -213,10 +212,36 @@
     // Data do dia
     document.addEventListener("DOMContentLoaded", () => {
         const hoje = new Date();
-        const dataHoraFormatada = hoje.toISOString().slice(0,19); // yyyy-MM-dd
+        const dataHoraFormatada = hoje.toISOString().slice(0,10); // yyyy-MM-dd
         document.getElementById("dtcadastro").value = dataHoraFormatada;
     });
 </script>
+
+<!--<script>-->
+<!--    // Exemplo de módulos por sistema-->
+<!--    const modulosPorSistema = {-->
+<!--        "ERP": ["Financeiro", "Estoque", "Compras", "Vendas"],-->
+<!--        "CRM": ["Clientes", "Marketing", "Suporte"],-->
+<!--        "RH": ["Folha de Pagamento", "Treinamento", "Recrutamento"]-->
+<!--    };-->
+
+<!--    document.getElementById("sistema").addEventListener("change", function () {-->
+<!--        const sistemaSelecionado = this.value;-->
+<!--        const moduloSelect = document.getElementById("modulo");-->
+
+<!--        // Limpa opções anteriores-->
+<!--        moduloSelect.innerHTML = '<option value="" disabled selected>Selecione</option>';-->
+
+<!--        if (modulosPorSistema[sistemaSelecionado]) {-->
+<!--            modulosPorSistema[sistemaSelecionado].forEach(modulo => {-->
+<!--                const option = document.createElement("option");-->
+<!--                option.value = modulo;-->
+<!--                option.textContent = modulo;-->
+<!--                moduloSelect.appendChild(option);-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>

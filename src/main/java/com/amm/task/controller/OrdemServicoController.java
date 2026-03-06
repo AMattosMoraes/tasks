@@ -2,6 +2,7 @@ package com.amm.task.controller;
 
 import com.amm.task.entities.OrdemServico;
 import com.amm.task.repositories.ClienteRepository;
+import com.amm.task.repositories.ModuloRepository;
 import com.amm.task.repositories.OrdemServicoRepository;
 import com.amm.task.repositories.SistemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class OrdemServicoController {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private ModuloRepository moduloRepository;
+
     public OrdemServicoController(OrdemServicoRepository ordemServicoRepository) {
         this.ordemServicoRepository = ordemServicoRepository;
     }
@@ -32,6 +36,7 @@ public class OrdemServicoController {
         model.addAttribute("ordemservico", new OrdemServico());
         model.addAttribute("sistema", sistemaRepository.findAll());
         model.addAttribute("cliente", clienteRepository.findAll());
+        model.addAttribute("modulo", moduloRepository.findAll());
         return "cadastroordemservico";
     }
 
@@ -59,6 +64,7 @@ public class OrdemServicoController {
         OrdemServico ordemServico = ordemServicoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ordem de Serviço não encontrada" + id));
         model.addAttribute("ordemservico", ordemServico);
+        model.addAttribute("cliente",clienteRepository.findAll());
         return "editarordemservico";
     }
 

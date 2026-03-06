@@ -3,10 +3,12 @@ package com.amm.task.entities;
 import com.amm.task.entities.enums.OrdemPrioridade;
 import com.amm.task.entities.enums.OrdemStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,9 +22,8 @@ public class OrdemServico implements Serializable {
     private Long id;
     private String ordemstatus;
     private String setor;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd", timezone = "GMT")
-    private Instant dtcadastro;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dtcadastro;
     private String cliente;
     private String prioridade;
     private Integer ordem;
@@ -35,16 +36,18 @@ public class OrdemServico implements Serializable {
     private String tiposervico;
     private String analistaresp;
     private String situacao;
-    private Instant dtinicio;
-    private Instant hrinicio;
-    private Instant dtfinal;
-    private Instant hrfinal;
+    private LocalDateTime dtinicio;
+    private LocalDateTime hrinicio;
+    private LocalDateTime dtfinal;
+    private LocalDateTime hrfinal;
 
     public OrdemServico(){}
 
-    public OrdemServico(Long id, String ordemstatus, String setor, Instant dtcadastro, String cliente, String prioridade,  Integer ordem
-            , String sistema, String modulo, String responsavel, String usuario, String titulo, String servico, String tiposervico,
-              String analistaresp, String situacao, Instant dtinicio, Instant hrinicio, Instant dtfinal, Instant hrfinal) {
+
+    public OrdemServico(Long id, String ordemstatus, String setor, LocalDate dtcadastro, String cliente, String prioridade,
+                        Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo,  String servico,
+                        String tiposervico, String analistaresp, String situacao, LocalDateTime dtinicio, LocalDateTime hrinicio,
+                        LocalDateTime dtfinal, LocalDateTime hrfinal) {
         this.id = id;
         this.ordemstatus = ordemstatus;
         this.setor = setor;
@@ -95,11 +98,11 @@ public class OrdemServico implements Serializable {
         this.setor = setor;
     }
 
-    public Instant getDtcadastro() {
+    public LocalDate getDtcadastro() {
         return dtcadastro;
     }
 
-    public void setDtcadastro(Instant dtcadastro) {
+    public void setDtcadastro(LocalDate dtcadastro) {
         this.dtcadastro = dtcadastro;
     }
 
@@ -199,35 +202,35 @@ public class OrdemServico implements Serializable {
         this.situacao = situacao;
     }
 
-    public Instant getDtinicio() {
+    public LocalDateTime getDtinicio() {
         return dtinicio;
     }
 
-    public void setDtinicio(Instant dtinicio) {
+    public void setDtinicio(LocalDateTime dtinicio) {
         this.dtinicio = dtinicio;
     }
 
-    public Instant getHrinicio() {
+    public LocalDateTime getHrinicio() {
         return hrinicio;
     }
 
-    public void setHrinicio(Instant hrinicio) {
+    public void setHrinicio(LocalDateTime hrinicio) {
         this.hrinicio = hrinicio;
     }
 
-    public Instant getDtfinal() {
+    public LocalDateTime getDtfinal() {
         return dtfinal;
     }
 
-    public void setDtfinal(Instant dtfinal) {
+    public void setDtfinal(LocalDateTime dtfinal) {
         this.dtfinal = dtfinal;
     }
 
-    public Instant getHrfinal() {
+    public LocalDateTime getHrfinal() {
         return hrfinal;
     }
 
-    public void setHrfinal(Instant hrfinal) {
+    public void setHrfinal(LocalDateTime hrfinal) {
         this.hrfinal = hrfinal;
     }
 
@@ -249,7 +252,7 @@ public class OrdemServico implements Serializable {
         return "OrdemServico{" +
                 "id=" + id +
                 ", ordemstatus='" + ordemstatus + '\'' +
-                ", setor=" + setor +
+                ", setor='" + setor + '\'' +
                 ", dtcadastro=" + dtcadastro +
                 ", cliente='" + cliente + '\'' +
                 ", prioridade='" + prioridade + '\'' +
