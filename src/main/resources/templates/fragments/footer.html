@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
 <body>
-<!-- templates/fragments/footer.html -->
-    <div th:fragment="footer">
-        <footer class="navbar-blue-per text-white text-center py-3 fixed-bottom">
+
+<!-- Definindo o fragmento chamado 'meu-rodape' -->
+<footer
+        th:fragment="meu-rodape" class="fixed-bottom"
+        style="
+            background-color: #f8f9fa !important;
+            border-top: 1px solid #dee2e6 !important;
+            height: 25px !important;
+            z-index: 9999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;">
+        <span
+                style="color: #6c757d !important;
+                font-size: 10px !important;
+                font-family: Arial, sans-serif !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                letter-spacing: 0.5px !important;">
             © 2026 AmmSistemas - Todos os direitos reservados
-        </footer>
-    </div>
+        </span>
+</footer>
+
 </body>
 </html>

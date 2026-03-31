@@ -27,14 +27,6 @@
         margin-bottom: 20px;
     }
 
-    h3 {
-        font-size: medium;
-        letter-spacing: 2px;
-        word-spacing: 6px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        /*margin-top: 40px;*/
-        /*margin-bottom: 20px;*/
-    }
     .form-control, .form-select, textarea {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         transition: box-shadow 0.3s ease-in-out;
@@ -57,137 +49,112 @@
 </style>
 <body class="container py-5">
 
-<!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-blue-per fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand align-items-center" href="#"><span> Sistema de Controle de Tarefas </span></a>
+<div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
+
+<div class="container mt-5 mb-5 d-flex justify-content-between align-items-center">
+    <!-- Título -->
+    <h2 class="m-0">Cadastro de Ordem de Serviço</h2>
+
+    <!-- Botões alinhados à direita -->
+    <div class="d-flex">
+        <button type="submit" class="btn btn-primary ms-2"><i class="bi bi-save me-1"></i> Salvar</button>
+        <button type="reset" class="btn btn-danger ms-2"><i class="bi bi-x-circle me-1"></i> Limpar</button>
+        <a th:href="@{/listaordemservico}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
     </div>
-</nav>
-
-<h2 class="text-center mt-5 mb-5"> Cadastro de Ordem de Serviço </h2>
-
+</div>
 
 <form th:action="@{/salvarordemservico}"
       th:object="${ordemservico}"
       method="post"
       class="form-container border rounded shadow row g-2 needs-validation" novalidate>
 
-    <div class="container-custom border rounded mx-auto">
-        <div class="row">
-            <h2></h2>
 
-            <!-- Data de Cadastro Invisivel-->
-            <input type="hidden" id="dtcadastro" name="dtcadastro">
+    <!-- Data de Cadastro Invisivel-->
+    <input type="hidden" id="dtcadastro" name="dtcadastro">
 
-            <!-- Ordem Status Invisivel-->
-            <input type="hidden" id="ordemstatus" name="ordemstatus" th:value="Aberto">
+    <!-- Ordem Status Invisivel-->
+    <input type="hidden" id="ordemstatus" name="ordemstatus" th:value="Aberto">
 
-            <!-- Ordem Status Invisivel-->
-            <input type="hidden" id="ordem" name="ordem" th:value="1">
+    <!-- Ordem Status Invisivel-->
+    <input type="hidden" id="ordem" name="ordem" th:value="1">
 
-            <!-- Responsavel Invisivel-->
-            <input type="hidden" id="responsavel" name="responsavel" th:value="Alexandre">
+    <!-- Responsavel Invisivel-->
+    <input type="hidden" id="responsavel" name="responsavel" th:value="Alexandre">
 
-            <!-- Usuario Invisivel-->
-            <input type="hidden" id="usuario" name="usuario" th:value="Alexandre">
+    <!-- Usuario Invisivel-->
+    <input type="hidden" id="usuario" name="usuario" th:value="Alexandre">
 
-            <!--Nome do Cliente-->
-            <div class="col-md-12">
-                <label for="cliente" class="form-label">Cliente</label>
-                <select class="form-select" id="cliente" name="cliente" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option th:each="c : ${cliente}" th:value="${c.nome}" th:text="${c.nome}"></option>
-                </select>
-                <div class="invalid-feedback">Informe um Cliente.</div>
-            </div>
-
-            <!--Nome do Sistema-->
-            <div class="col-md-6">
-                <label for="sistema" class="form-label">Sistema</label>
-                <select class="form-select" id="sistema" name="sistema" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option th:each="s : ${sistema}" th:value="${s.nome}" th:text="${s.nome}"></option>
-                </select>
-                <div class="invalid-feedback">Informe um Sistema.</div>
-            </div>
-
-            <!--Nome do Modulo-->
-            <div class="col-md-6">
-                <label for="modulo" class="form-label">Modulo</label>
-                <select class="form-select" id="modulo" name="modulo" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option th:each="m : ${modulo}" th:value="${m.descmodulo}" th:text="${m.descmodulo}"></option>
-                </select>
-                <div class="invalid-feedback">Informe um Modulo.</div>
-            </div>
-
-            <!--Nome do Módulo (dependente do Sistema)-->
-<!--            <div class="col-md-6">-->
-<!--                <label for="modulo" class="form-label">Módulo</label>-->
-<!--                <select class="form-select" id="modulo" name="modulo" required>-->
-<!--                    <option value="" disabled selected>Selecione um sistema primeiro</option>-->
-<!--                </select>-->
-<!--                <div class="invalid-feedback">Informe um Módulo.</div>-->
-<!--            </div>-->
-
-            <!-- Titulo do Serviço -->
-            <div class="col-md-6">
-                <label for="titulo" class="form-label"> Titulo </label>
-                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Digite um Titulo">
-            </div>
-
-            <!-- Serviço -->
-            <div class="col-md-12">
-                <label for="servico" class="form-label" >Descrição do Serviço</label>
-                <textarea class="form-control" id="servico" nome="servico" rows="5"
-                          placeholder="Campo para descrição do serviço"></textarea>
-            </div>
-            <h2></h2>
-        </div>
+    <!--Nome do Cliente-->
+    <div class="col-md-12">
+        <label for="cliente" class="form-label">Cliente</label>
+        <select class="form-select" id="cliente" name="cliente" required>
+            <option value="" disabled selected>Selecione...</option>
+            <option th:each="c : ${cliente}" th:value="${c.nome}" th:text="${c.nome}"></option>
+        </select>
+        <div class="invalid-feedback">Informe um Cliente.</div>
     </div>
 
-    <div class="container-check text-center align-items-center border rounded mx-auto">
-        <div class="row">
-            <h2></h2>
-
-            <!--Setor-->
-            <div class="col-md-4">
-                <label for="setor" class="form-label"> Setor </label>
-                <select class="form-select" id="setor" name="setor" required>
-                    <option value="" disabled selected>Selecione...</option>
-                    <option value="0">Administrativo</option>
-                    <option value="1">Programação</option>
-                    <option value="2">Suporte</option>
-                </select>
-                <div class="invalid-feedback">Informe um Setor.</div>
-            </div>
-
-            <!--Prioridade-->
-            <div class="col-md-4">
-                <label for="setor" class="form-label"> Prioridade </label>
-                <select class="form-select" id="prioridade" name="prioridade" required>
-                    <option value="" disabled selected>Selecione...</option>
-                    <option value="Baixa">Baixa</option>
-                    <option value="Media">Média</option>
-                    <option value="Alta">Alta</option>
-                </select>
-                <div class="invalid-feedback">Informe um Setor.</div>
-            </div>
-
-            <h2></h2>
-        </div>
+    <!--Nome do Sistema-->
+    <div class="col-md-6">
+        <label for="sistema" class="form-label">Sistema</label>
+        <select class="form-select" id="sistema" name="sistema" required>
+            <option value="" disabled selected>Selecione...</option>
+            <option th:each="s : ${sistema}" th:value="${s.nome}" th:text="${s.nome}"></option>
+        </select>
+        <div class="invalid-feedback">Informe um Sistema.</div>
     </div>
 
-    <!-- Botões -->
-    <div class="col-12 d-flex justify-content-end mt-4">
-        <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Salvar</button>
-        <button type="reset" class="btn btn-danger m-2"><i class="bi bi-x-circle m-2"></i> Limpar</button>
-        <a th:href="@{/listaordemservico}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
+    <!--Nome do Modulo-->
+    <div class="col-md-6">
+        <label for="modulo" class="form-label">Modulo</label>
+        <select class="form-select" id="modulo" name="modulo" required>
+            <option value="" disabled selected>Selecione...</option>
+            <option th:each="m : ${modulo}" th:value="${m.descmodulo}" th:text="${m.descmodulo}"></option>
+        </select>
+        <div class="invalid-feedback">Informe um Modulo.</div>
     </div>
+
+    <!-- Titulo do Serviço -->
+    <div class="col-md-6">
+        <label for="titulo" class="form-label"> Titulo </label>
+        <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Digite um Titulo">
+    </div>
+
+    <!-- Serviço -->
+    <div class="col-md-12">
+        <label for="servico" class="form-label" >Descrição do Serviço</label>
+        <textarea class="form-control" id="servico" nome="servico" rows="3"
+                  placeholder="Campo para descrição do serviço"></textarea>
+    </div>
+
+    <!--Setor-->
+    <div class="col-md-4">
+        <label for="setor" class="form-label"> Setor </label>
+        <select class="form-select" id="setor" name="setor" required>
+            <option value="" disabled selected>Selecione...</option>
+            <option value="0">Administrativo</option>
+            <option value="1">Programação</option>
+            <option value="2">Suporte</option>
+        </select>
+        <div class="invalid-feedback">Informe um Setor.</div>
+    </div>
+
+    <!--Prioridade-->
+    <div class="col-md-4">
+        <label for="setor" class="form-label"> Prioridade </label>
+        <select class="form-select" id="prioridade" name="prioridade" required>
+            <option value="" disabled selected>Selecione...</option>
+            <option value="Baixa">Baixa</option>
+            <option value="Media">Média</option>
+            <option value="Alta">Alta</option>
+        </select>
+        <div class="invalid-feedback">Informe um Setor.</div>
+    </div>
+    <h2></h2>
 </form>
 
 <!-- Rodapé-->
-<div th:insert="fragments/footer :: footer"></div>
+<div th:insert="fragments/footer :: meu-rodape"></div>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -216,32 +183,6 @@
         document.getElementById("dtcadastro").value = dataHoraFormatada;
     });
 </script>
-
-<!--<script>-->
-<!--    // Exemplo de módulos por sistema-->
-<!--    const modulosPorSistema = {-->
-<!--        "ERP": ["Financeiro", "Estoque", "Compras", "Vendas"],-->
-<!--        "CRM": ["Clientes", "Marketing", "Suporte"],-->
-<!--        "RH": ["Folha de Pagamento", "Treinamento", "Recrutamento"]-->
-<!--    };-->
-
-<!--    document.getElementById("sistema").addEventListener("change", function () {-->
-<!--        const sistemaSelecionado = this.value;-->
-<!--        const moduloSelect = document.getElementById("modulo");-->
-
-<!--        // Limpa opções anteriores-->
-<!--        moduloSelect.innerHTML = '<option value="" disabled selected>Selecione</option>';-->
-
-<!--        if (modulosPorSistema[sistemaSelecionado]) {-->
-<!--            modulosPorSistema[sistemaSelecionado].forEach(modulo => {-->
-<!--                const option = document.createElement("option");-->
-<!--                option.value = modulo;-->
-<!--                option.textContent = modulo;-->
-<!--                moduloSelect.appendChild(option);-->
-<!--            });-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 
 </body>
 </html>
