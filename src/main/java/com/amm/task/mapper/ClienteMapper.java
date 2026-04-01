@@ -28,7 +28,8 @@ public class ClienteMapper {
                 dto.getNome(),
                 dto.getUf(),
                 dto.getContato(),
-                dto.getInfo()
+                dto.getInfo(),
+                dto.getAtivo()
         );
     }
 

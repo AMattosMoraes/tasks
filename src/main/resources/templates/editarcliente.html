@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Editar Cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/amm.ico}" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="@{/amm.ico}">
 </head>
 <style>
     span {
@@ -22,7 +25,7 @@
     h2 {
         letter-spacing: 2px;
         word-spacing: 6px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* sombra suave */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* sombra suave */
         margin-top: 40px; /* ajusta a distância do topo */
         margin-bottom: 20px; /* espaçamento inferior */
     }
@@ -37,42 +40,58 @@
         border-color: #0d6efd; /* Azul padrão Bootstrap */
     }
 
+    .btn-primary {
+        background-color: #052C65;
+    }
+
+    .btn-primary:hover {
+        background-color: #0a3d85;
+        border: none;
+        transition: all 0.3s ease;
+        align-items: center;
+    }
+
+    .btn-secondary:hover {
+        border: none;
+        transition: all 0.3s ease;
+        align-items: center;
+    }
+
 </style>
 <body class="container py-5">
 
 <div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
 
-<div class="container mt-5 mb-5 d-flex justify-content-between align-items-center">
-    <h2 class="m-0"> Editar Dados do Cliente </h2>
-
-    <div class="d-flex">
-        <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Atualizar</button>
-        <a th:href="@{/listacliente}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
-    </div>
-</div>
-
-<form th:action="@{/atualizarcliente/{id}(id=${cliente.id})}"
+<form id="frmEditaCadastro" th:action="@{/atualizarcliente/{id}(id=${cliente.id})}"
       th:object="${cliente}"
       method="post"
       class="form-container border rounded shadow row g-2 needs-validation" novalidate>
 
-<!--    CNPJ-->
+    <h3></h3>
+    <h2 class="m-0"> Editar Dados do Cliente </h2>
+    <h3></h3>
+
+    <!--    CNPJ-->
     <div class="col-md-2">
         <label for="cnpj" class="form-label">CNPJ</label>
-        <input type="text" class="form-control" id="cnpj" th:field="*{cnpj}" maxlength="18">
-<!--        <div class="invalid-feedback">Informe um CPNJ válido.</div>-->
+        <input id="cnpj" type="text" class="form-control needs-validation" th:field="*{cnpj}"
+               placeholder="00.000.000/0000-00"
+               maxlength="18"
+               oninput="mascaraCNPJ(this)"
+               required>
+        <div class="invalid-feedback">Informe um CPNJ válido.</div>
     </div>
 
-<!--    Nome do Cliente-->
+    <!--    Nome do Cliente-->
     <div class="col-md-6">
         <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" th:field="*{nome}" >
+        <input type="text" class="form-control" th:field="*{nome}">
     </div>
 
-<!--    UF-->
+    <!--    UF-->
     <div class="col-md-2">
         <label class="form-label" for="uf">UF</label>
-        <select class="form-select" id="uf" maxlength="2" th:field="*{uf}" type="text">
+        <select id="uf" class="form-select" maxlength="2" th:field="*{uf}" type="text">
             <option value="">Selecione</option>
             <option value="AC">AC</option>
             <option value="AL">AL</option>
@@ -104,29 +123,189 @@
         </select>
     </div>
 
-<!--     Contato-->
+    <!--     Contato-->
     <div class="col-md-6">
         <label for="contato" class="form-label">Contato</label>
-        <input type="text" class="form-control" th:field="*{contato}">
+        <input id="contato" type="text" class="form-control" th:field="*{contato}">
     </div>
 
-<!--     Informações-->
+    <!--     Informações-->
     <div class="col-md-10">
         <label class="form-label" for="info">Informação Adicional</label>
-        <textarea class="form-control" th:field="*{info}" rows="5"></textarea>
+        <textarea id="info" class="form-control" th:field="*{info}" rows="5"></textarea>
     </div>
-    <h2></h2>
+
+    <!--    Ativo-->
+    <div class="col-md-4">
+        <label class="form-label d-block">Ativo/Inativo</label>
+
+        <div class="d-flex gap-3">
+            <!-- Opção Ativo -->
+            <div class="form-check">
+                <input id="ativoSim" class="form-check-input" type="radio" th:field="*{ativo}" th:value="S" th:checked="*{ativo == 'S'}">
+                <label class="form-check-label" for="ativoSim">Ativo</label>
+            </div>
+
+            <!-- Opção Inativo -->
+            <div class="form-check">
+                <input id="ativoNao" class="form-check-input" type="radio" th:field="*{ativo}" th:value="N" th:checked="*{ativo == 'N'}">
+                <label class="form-check-label" for="ativoNao">Inativo</label>
+            </div>
+        </div>
+
+        <!-- Feedback de validação (aparece se nenhum for marcado) -->
+        <div class="invalid-feedback">Selecione uma opção de status.</div>
+    </div>
+
+    <div class="d-flex">
+        <button id="btnAtualizar" type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Atualizar</button>
+        <a id="btnVoltar" th:href="@{/listacliente}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
+    </div>
+
 </form>
 <!-- Rodapé-->
 <div th:insert="fragments/footer :: meu-rodape"></div>
+
+<!--Msg enquanto salva os dados e tirar barras do cnpj-->
+<div id="loading-msg" class="alert alert-info mt-3" style="display: none;">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Processando dados, por favor aguarde...
+</div>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!--Valida CNPJ-->
+<!--Script para ativar validação Bootstrap-->
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
+<!--Desabilitar botões enquanto salva e remover barras do cnpj-->
+<script>
+    document.getElementById('frmEditaCadastro').addEventListener('submit', function () {
+// 1. Exibe a mensagem de loading
+        document.getElementById('loading-msg').style.display = 'block';
+
+        const campoCNPJ = document.getElementById('cnpj');
+        campoCNPJ.value = campoCNPJ.value.replace(/\D/g, '');
+
+        const botoes = document.querySelectorAll('.d-flex .btn');
+
+        botoes.forEach(botao => {
+            botao.classList.add('disabled');
+            botao.style.pointEvents = 'none'
+
+            if (botao.type === 'submit') {
+                botao.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Atualizando...';
+            }
+        })
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Atualizando...';
+    });
+</script>
+
+<!--Validar CNPJ-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         Inputmask("99.999.999/9999-99").mask(document.getElementById("cnpj"));
+
+        // Função para validar CNPJ
+        function validarCNPJ(cnpj) {
+            cnpj = cnpj.replace(/[^\d]+/g, ''); // remove caracteres não numéricos
+            if (cnpj.length !== 14)
+                return false;
+
+            // Elimina CNPJs inválidos conhecidos
+            if (/^(\d)\1+$/.test(cnpj))
+                return false;
+
+            let tamanho = cnpj.length - 2;
+            let numeros = cnpj.substring(0, tamanho);
+            let digitos = cnpj.substring(tamanho);
+            let soma = 0;
+            let pos = tamanho - 7;
+
+            for (let i = tamanho; i >= 1; i--) {
+                soma += numeros.charAt(tamanho - i) * pos--;
+                if (pos < 2) pos = 9;
+            }
+
+            let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(0))
+                return false;
+
+            tamanho = tamanho + 1;
+            numeros = cnpj.substring(0, tamanho);
+            soma = 0;
+            pos = tamanho - 7;
+
+            for (let i = tamanho; i >= 1; i--) {
+                soma += numeros.charAt(tamanho - i) * pos--;
+                if (pos < 2) pos = 9;
+            }
+
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+            if (resultado != digitos.charAt(1))
+                return false;
+
+            return true;
+
+        }
+
+        // Validação ao enviar o formulário
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function (event) {
+            const cnpjInput = document.getElementById("cnpj");
+
+            if (!validarCNPJ(cnpjInput.value)) {
+                event.preventDefault();
+                event.stopPropagation();
+                cnpjInput.classList.add("is-invalid");
+            } else {
+                cnpjInput.classList.remove("is-invalid");
+                cnpjInput.classList.add("is-valid");
+            }
+        });
+    });
+</script>
+
+<!--Mascara do CNPJ-->
+<script>
+    // Função que aplica a máscara
+    function mascaraCNPJ(input) {
+        let v = input.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+        if (v.length > 14) v = v.substring(0, 14);
+
+        v = v.replace(/^(\d{2})(\d)/, "$1.$2");
+        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+        v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
+        v = v.replace(/(\d{4})(\d)/, "$1-$2");
+
+        input.value = v;
+    }
+
+    // Executa assim que a página terminar de carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputCnpj = document.getElementById('cnpj');
+        if (inputCnpj) {
+            mascaraCNPJ(inputCnpj); // Aplica no valor que veio do banco
+        }
     });
 </script>
 

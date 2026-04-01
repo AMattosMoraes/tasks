@@ -22,17 +22,19 @@ public class Cliente implements Serializable {
     private String uf;
     private String contato;
     private String info;
+    private String ativo;
 
     public Cliente() {
     }
 
-    public Cliente(Long id, String cnpj, String nome, String uf, String contato, String info) {
+    public Cliente(Long id, String cnpj, String nome, String uf, String contato, String info, String ativo) {
         this.id = id;
         this.cnpj = cnpj;
         this.nome = nome;
         this.uf = uf;
         this.contato = contato;
         this.info = info;
+        this.ativo = ativo;
     }
 
     public static long getSerialVersionUID() {
@@ -87,6 +89,14 @@ public class Cliente implements Serializable {
         this.info = info;
     }
 
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,6 +119,7 @@ public class Cliente implements Serializable {
                 ", uf='" + uf + '\'' +
                 ", contato='" + contato + '\'' +
                 ", info='" + info + '\'' +
+                ", ativo='" + ativo + '\'' +
                 '}';
     }
 }

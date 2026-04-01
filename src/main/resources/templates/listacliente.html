@@ -33,6 +33,24 @@
             font-size: smaller;
         }
 
+        .btn-primary {
+            background-color: #052C65;
+        }
+
+        .btn-primary:hover {
+            background-color: #0a3d85;
+            border: none;
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: darkgray;
+            border: none;
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
     </style>
 </head>
 
@@ -50,6 +68,37 @@
         </div>
     </div>
 
+<!--    Filtro Ativo/Inativo-->
+    <div class="container mb-3 shadow-sm p-3 bg-light rounded border">
+        <form th:action="@{/listacliente}" method="get">
+            <div class="d-flex align-items-center gap-4">
+                <span class="fw-bold text-secondary"><i class="bi bi-funnel"></i> Status:</span>
+
+                <div class="form-check">
+                    <!-- 'value=""' traz todos (cai no ELSE do seu Controller) -->
+                    <input class="form-check-input" type="radio" name="ativo" id="todos" value=""
+                           th:checked="${ativo == null || ativo == ''}" onchange="this.form.submit()">
+                    <label class="form-check-label" for="todos">Todos</label>
+                </div>
+
+                <div class="form-check">
+                    <!-- 'value="S"' filtra Ativos (cai no IF do seu Controller) -->
+                    <input class="form-check-input" type="radio" name="ativo" id="btnAtivo" value="S"
+                           th:checked="${ativo == 'S'}" onchange="this.form.submit()">
+                    <label class="form-check-label" for="btnAtivo">Ativos</label>
+                </div>
+
+                <div class="form-check">
+                    <!-- 'value="N"' filtra Inativos (cai no IF do seu Controller) -->
+                    <input class="form-check-input" type="radio" name="ativo" id="btnInativo" value="N"
+                           th:checked="${ativo == 'N'}" onchange="this.form.submit()">
+                    <label class="form-check-label" for="btnInativo">Inativos</label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle border rounded shadow">
             <thead class="table-personal">
@@ -59,16 +108,21 @@
                 <th>Nome</th>
                 <th>UF</th>
                 <th>Contato</th>
+                <th>Ativo</th>
                 <th class="text-center">Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="cliente : ${listacliente}">
                 <td th:text="${cliente.id}"></td>
-                <td th:text="${cliente.cnpj}"></td>
+                <td class="cnpj-mask" th:text="${cliente.cnpj}"></td>
                 <td th:text="${cliente.nome}"></td>
                 <td th:text="${cliente.uf}"></td>
                 <td th:text="${cliente.contato}"></td>
+                <td>
+                    <span th:if="${cliente.ativo == 'S'}" class="badge bg-success">Ativo</span>
+                    <span th:if="${cliente.ativo == 'N'}" class="badge bg-danger">Inativo</span>
+                </td>
                 <td class="text-center">
 
                     <a th:href="@{/editarcliente/{id}(id=${cliente.id})}" class="btn btn-warning btn-sm me-2">
@@ -84,7 +138,6 @@
         </table>
 
         <!-- Informação de páginas  -->
-<!--        <span class="text-muted">-->
         <span class="text-centermt-5 mb-5 "> Página
             <span th:text="${currentPage + 1}"></span> de
             <span th:text="${totalPages}"></span>
@@ -95,28 +148,29 @@
             <nav aria-label="Navegação de páginas">
                 <ul class="pagination pagination-sm">
 
-                    <!-- Botão Anterior -->
+                    <!-- Botão Anterior - ADICIONADO ativo=${ativo} -->
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/listacliente(page=${currentPage - 1})}" aria-label="Anterior">
+                        <a class="page-link" th:href="@{/listacliente(page=${currentPage - 1}, ativo=${ativo})}" aria-label="Anterior">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
 
-                    <!-- Números das páginas -->
-                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages -1)}"
+                    <!-- Números das páginas - JÁ ESTAVA CORRETO -->
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/listacliente(page=${i})}" th:text="${i + 1}"></a>
+                        <a class="page-link" th:href="@{/listacliente(page=${i}, ativo=${ativo})}" th:text="${i + 1}"></a>
                     </li>
 
-                    <!-- Botão Próxima -->
+                    <!-- Botão Próxima - CORRIGIDO page=${currentPage + 1} e ADICIONADO ativo=${ativo} -->
                     <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                        <a class="page-link" th:href="@{/listacliente(page=${currentPage + 1})}" aria-label="Próxima">
+                        <a class="page-link" th:href="@{/listacliente(page=${currentPage + 1}, ativo=${ativo})}" aria-label="Próxima">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
+
 
     </div>
 </div>
@@ -125,5 +179,22 @@
 <div th:insert="fragments/footer :: meu-rodape"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!--Aplica mascara no campo CNPJ-->
+<script>
+    function aplicarMascaraCNPJ() {
+        const cnpjs = document.querySelectorAll('.cnpj-mask');
+        cnpjs.forEach(td => {
+            let valor = td.textContent.replace(/\D/g, ''); // Remove tudo que não é número
+            if (valor.length === 14) {
+                td.textContent = valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+            }
+        });
+    }
+
+    // Executa ao carregar a página
+    document.addEventListener('DOMContentLoaded', aplicarMascaraCNPJ);
+</script>
+
 </body>
 </html>

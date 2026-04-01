@@ -12,16 +12,29 @@ public class ClienteDTO {
     private String uf;
     private String contato;
     private String info;
+    private String ativo;
 
-    public ClienteDTO(Cliente cliente){}
+    public ClienteDTO() {
+    }
 
-    public ClienteDTO(Long id, String cnpj, String nome, String uf, String contato, String info) {
+    public ClienteDTO(Long id, String cnpj, String nome, String uf, String contato, String info, String ativo) {
         this.id = id;
         this.cnpj = cnpj;
         this.nome = nome;
         this.uf = uf;
         this.contato = contato;
         this.info = info;
+        this.ativo = ativo;
+    }
+
+    public ClienteDTO(Cliente cliente){
+        this.id = cliente.getId();
+        this.cnpj = cliente.getCnpj();
+        this.nome = cliente.getNome();
+        this.uf = cliente.getUf();
+        this.contato = cliente.getContato();
+        this.info = cliente.getInfo();
+        this.ativo = cliente.getAtivo();
     }
 
     public static ClienteDTO fromEntity(Cliente cliente){
@@ -31,7 +44,8 @@ public class ClienteDTO {
                 cliente.getNome(),
                 cliente.getUf(),
                 cliente.getContato(),
-                cliente.getInfo()
+                cliente.getInfo(),
+                cliente.getAtivo()
         );
     }
 
@@ -83,6 +97,14 @@ public class ClienteDTO {
         this.info = info;
     }
 
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,6 +127,7 @@ public class ClienteDTO {
                 ", uf='" + uf + '\'' +
                 ", contato='" + contato + '\'' +
                 ", info='" + info + '\'' +
+                ", ativo='" + ativo + '\'' +
                 '}';
     }
 }
