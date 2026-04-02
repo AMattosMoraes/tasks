@@ -62,7 +62,8 @@
 
 <div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
 
-<form id="frmCadastroCliente" th:action="@{/salvarcliente}"
+<form id="frmCadastroCliente"
+      th:action="@{/salvarcliente}"
       th:object="${cliente}"
       method="post"
       class="form-container border rounded shadow row g-2 needs-validation" novalidate>
@@ -74,7 +75,7 @@
     <!--CNPJ-->
     <div class="col-md-2">
         <label for="cnpj" class="form-label">CNPJ</label>
-        <input  type="text" class="form-control needs-validation" th:field="*{cnpj}"
+        <input type="text" class="form-control needs-validation" th:field="*{cnpj}"
                placeholder="00.000.000/0000-00"
                maxlength="18"
                oninput="mascaraCNPJ(this)"
@@ -85,7 +86,7 @@
     <!--Nome do CLiente-->
     <div class="col-md-6">
         <label for="nome" class="form-label">Nome</label>
-        <input id="nome" type="text" class="form-control"  name="nome" placeholder="Digite o nome do cliente" maxlength="50"
+        <input id="nome" type="text" class="form-control" name="nome" placeholder="Digite o nome do cliente" maxlength="50"
                required>
         <div class="invalid-feedback">O campo não pode ficar em branco.</div>
     </div>
@@ -138,7 +139,7 @@
         <textarea id="info" class="form-control" nome="info" rows="5" placeholder="Campo para informações adicionais"></textarea>
     </div>
 
-<!--    Ativo-->
+    <!--    Ativo-->
     <div class="col-md-4">
         <label class="form-label d-block">Ativo/Inativo</label>
 
@@ -155,8 +156,6 @@
                 <label class="form-check-label" for="ativoNao">Inativo</label>
             </div>
         </div>
-
-        <!-- Feedback de validação (aparece se nenhum for marcado) -->
         <div class="invalid-feedback">Selecione uma opção de status.</div>
     </div>
 

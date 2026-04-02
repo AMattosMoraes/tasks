@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ModuloRepository extends JpaRepository<Modulo, Long> {
 
-    List<Modulo> findByDescsistema(String descsistema);
+    List<Modulo> findByDescSistema(String descSistema);
 
 }

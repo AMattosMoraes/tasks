@@ -1,18 +1,15 @@
 package com.amm.task.services;
 
+import com.amm.task.dto.ClienteDTO;
 import com.amm.task.entities.Cliente;
+import com.amm.task.mapper.ClienteMapper;
 import com.amm.task.repositories.ClienteRepository;
-import com.amm.task.services.exceptions.DatabaseException;
 import com.amm.task.services.exceptions.ResourcesNotFoundExceptions;
-import org.hibernate.dialect.Database;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClienteService {
@@ -20,47 +17,52 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente>findAll(){
-        return clienteRepository.findAll();
-    }
+    @Autowired
+    private  ClienteMapper clienteMapper;
 
-    public Cliente findById(Long id){
-        Optional<Cliente> obj = clienteRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourcesNotFoundExceptions(id));
-    }
-
-    public Cliente insert(Cliente obj){
-        return clienteRepository.save(obj);
-    }
-
-    public void delete(Long id){
-        try {
-            clienteRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e ){
-            throw new ResourcesNotFoundExceptions(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException(e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
+    @Transactional(readOnly = true)
+    public Page<ClienteDTO> findAll(Pageable pageable, String ativo) {
+        Page<Cliente> page;
+        if(ativo != null && !ativo.isEmpty()){
+            page = clienteRepository.findByAtivo(ativo, pageable);
+        } else {
+            page = clienteRepository.findAll(pageable);
         }
+
+        return page.map(clienteMapper::toDto);
     }
 
-    public Cliente update(Long id, Cliente obj){
-        try {
-            Cliente entity = clienteRepository.getReferenceById(id);
-            updateData(entity, obj);
-            return clienteRepository.save(entity);
-        } catch (EntityNotFoundException e){
-            throw new ResourcesNotFoundExceptions(id);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
+    @Transactional(readOnly = true)
+    public ClienteDTO findById(Long id) {
+        Cliente entity = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
+        return clienteMapper.toDto(entity);
+    }
+
+    @Transactional
+    public ClienteDTO insert(ClienteDTO dto) {
+        Cliente entity = clienteMapper.toEntity(dto);
+        entity = clienteRepository.save(entity);
+        return clienteMapper.toDto(entity);
+    }
+
+    @Transactional
+    public ClienteDTO update(Long id, ClienteDTO dto) {
+        Cliente entity = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
+        entity.setAtivo(dto.getAtivo());
+        entity.setInfo(dto.getInfo());
+        entity.setContato(dto.getContato());
+        entity = clienteRepository.save(entity);
+        return clienteMapper.toDto(entity);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!clienteRepository.existsById(id)) {
             throw new ResourcesNotFoundExceptions(id);
         }
-    }
-
-    private void updateData(Cliente entity, Cliente obj) {
-        entity.setContato(obj.getContato());
-        entity.setInfo(obj.getInfo());
+        clienteRepository.deleteById(id);
     }
 
 }

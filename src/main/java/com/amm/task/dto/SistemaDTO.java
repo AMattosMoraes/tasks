@@ -1,29 +1,32 @@
-package com.amm.task.entities;
+package com.amm.task.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.amm.task.entities.Sistema;
+
 import java.util.Objects;
 
-@Entity
-@Table(name = "sistema")
-public class Sistema implements Serializable {
+public class SistemaDTO {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    public Sistema(){}
+    public SistemaDTO(){
+    }
 
-    public Sistema(Long id, String nome) {
+    public SistemaDTO(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public SistemaDTO(Sistema sistema){
+        this.id = sistema.getId();;
+        this.nome = sistema.getNome();;
+    }
+
+    public SistemaDTO fromEntity(Sistema sistema){
+        return new SistemaDTO(
+                sistema.getId(),
+                sistema.getNome()
+        );
     }
 
     public Long getId() {
@@ -44,20 +47,19 @@ public class Sistema implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Sistema sistema = (Sistema) o;
-        return Objects.equals(id, sistema.id);
+        SistemaDTO that = (SistemaDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, nome);
     }
 
     @Override
     public String toString() {
-        return "Sistema{" +
+        return "SistemaDTO{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 '}';

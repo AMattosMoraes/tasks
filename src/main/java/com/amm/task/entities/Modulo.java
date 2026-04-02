@@ -13,16 +13,18 @@ public class Modulo implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descsistema;
-    private String descmodulo;
+    @Column(name = "sistema")
+    private String descSistema;
+    @Column(name = "modulo")
+    private String descModulo;
 
     public Modulo(){
     }
 
-    public Modulo(Long id, String descsistema, String descmodulo) {
+    public Modulo(Long id, String descSistema, String descModulo) {
         this.id = id;
-        this.descsistema = descsistema;
-        this.descmodulo = descmodulo;
+        this.descSistema = descSistema;
+        this.descModulo = descModulo;
     }
 
     public Long getId() {
@@ -33,20 +35,20 @@ public class Modulo implements Serializable{
         this.id = id;
     }
 
-    public String getDescsistema() {
-        return descsistema;
+    public String getDescSistema() {
+        return descSistema;
     }
 
-    public void setDescsistema(String descsistema) {
-        this.descsistema = descsistema;
+    public void setDescSistema(String descSistema) {
+        this.descSistema = descSistema;
     }
 
-    public String getDescmodulo() {
-        return descmodulo;
+    public String getDescModulo() {
+        return descModulo;
     }
 
-    public void setDescmodulo(String descmodulo) {
-        this.descmodulo = descmodulo;
+    public void setDescModulo(String descModulo) {
+        this.descModulo = descModulo;
     }
 
     @Override
@@ -66,8 +68,8 @@ public class Modulo implements Serializable{
     public String toString() {
         return "Modulo{" +
                 "id=" + id +
-                ", descsistema='" + descsistema + '\'' +
-                ", descmodulo='" + descmodulo + '\'' +
+                ", descSistema='" + descSistema + '\'' +
+                ", descModulo='" + descModulo + '\'' +
                 '}';
     }
 }

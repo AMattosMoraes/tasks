@@ -42,30 +42,37 @@
 
 <div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
 
-<div class="container mt-5 mb-5 d-flex justify-content-between align-items-center">
-    <!-- Título -->
-    <h2 class="m-0"> Cadastro de Sistema </h2>
+
+<form id="frmCadastroSistema"
+      th:action="@{/salvarsistema}"
+      th:object="${sistema}"
+      method="post"
+      class="form-container border rounded shadow row g-2 needs-validation" novalidate>
+
+<!--    <h3></h3>-->
+    <h2 class="mb-3"> Cadastro de Sistema </h2>
+<!--    <h3></h3>-->
+
+    <!--Nome do Sistema-->
+    <div class="col-md-6">
+        <label for="nome" class="form-label">Nome do Sistema</label>
+        <input
+                id="nome"
+                type="text"
+                th:field="*{nome}"
+                class="form-control"
+                placeholder="Digite o nome do cliente"
+                maxlength="50"
+                required>
+        <div class="invalid-feedback">O campo não pode ficar em branco.</div>
+    </div>
 
     <div class="d-flex">
         <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Salvar</button>
         <button type="reset" class="btn btn-danger m-2"><i class="bi bi-x-circle m-2"></i> Limpar</button>
         <a th:href="@{/listasistema}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
     </div>
-</div>
 
-<form th:action="@{/salvarsistema}"
-      th:object="${sistema}"
-      method="post"
-      class="form-container border rounded shadow row g-2 needs-validation" novalidate>
-
-    <!--Nome do Sistema-->
-    <div class="col-md-6">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do cliente" maxlength="50"
-               required>
-        <div class="invalid-feedback">O campo não pode ficar em branco.</div>
-    </div>
-    <h2></h2>
 </form>
 <!-- Rodapé -->
 <div th:insert="fragments/footer :: meu-rodape"></div>

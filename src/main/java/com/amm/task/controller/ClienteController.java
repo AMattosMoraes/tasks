@@ -4,25 +4,24 @@ import com.amm.task.dto.ClienteDTO;
 import com.amm.task.entities.Cliente;
 import com.amm.task.mapper.ClienteMapper;
 import com.amm.task.repositories.ClienteRepository;
+import com.amm.task.services.ClienteService;
+import com.amm.task.services.exceptions.ResourcesNotFoundExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
 
     @Autowired
-    private final ClienteRepository clienteRepository;
+    private ClienteService service;
 
-    public ClienteController(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+    @Autowired
+    private ClienteMapper clienteMapper;
 
     @GetMapping("/cadastrocliente")
     public String mostrarFormulario(Model model) {
@@ -34,23 +33,13 @@ public class ClienteController {
     public String listarClientes(
             Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(value = "ativo", required = false) String ativo
-            ) {
-
+            String ativo) {
         int pageSize = 10;
         PageRequest pageable = PageRequest.of(page, pageSize);
-//        Page<Cliente> clientesPage = clienteRepository.findAll(pageable);
-        Page<Cliente> clientesPage;
+        Page<ClienteDTO> clientesPage = service.findAll(pageable, ativo);
 
-        if(ativo != null && !ativo.isEmpty()){
-            clientesPage = clienteRepository.findByAtivo(ativo, pageable);
-        } else {
-            clientesPage = clienteRepository.findAll(pageable);
-        }
 
-        List<ClienteDTO> clientesDTO = ClienteMapper.toDTOList(clientesPage.getContent());
-
-        model.addAttribute("listacliente", clientesDTO);
+        model.addAttribute("listacliente", clientesPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", clientesPage.getTotalPages());
         model.addAttribute("ativo", ativo);
@@ -59,41 +48,63 @@ public class ClienteController {
     }
 
     @PostMapping("/salvarcliente")
-    public String salvarCliente(@ModelAttribute("cliente") ClienteDTO clienteDTO) {
-        Cliente clienteSalva = ClienteMapper.toEntity(clienteDTO);
-        clienteRepository.save(clienteSalva);
-
+    public String salvarCliente(@ModelAttribute("cliente") ClienteDTO dto) {
+        service.insert(dto);
         return "redirect:/listacliente";
     }
 
     @GetMapping("/editarcliente/{id}")
-    public String editarCliente(@PathVariable("id") Long id, Model model) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado " + id));
-
-        ClienteDTO clienteDTO = ClienteMapper.toDTO(cliente);
-
-        model.addAttribute("cliente", clienteDTO);
-
-        return "editarcliente";
+    public String editarCliente(Model model, @PathVariable("id") Long id, RedirectAttributes attributes) {
+        try{
+            ClienteDTO dto = service.findById(id);
+            model.addAttribute("cliente", dto);
+            return "editarcliente";
+        } catch (ResourcesNotFoundExceptions e) {
+            attributes.addFlashAttribute(
+                    "mensagemErro:",
+                    "Não foi possivel editar: O Cliente com ID " + id + "não existe");
+            return "editarcliente";
+        }
     }
 
     @PostMapping("/atualizarcliente/{id}")
-    public String atualizarCliente(@PathVariable("id") Long id, @ModelAttribute ClienteDTO clienteDTO) {
-        clienteDTO.setId(id);
-        Cliente clienteParaAtualizar = ClienteMapper.toEntity(clienteDTO);
-        clienteRepository.save(clienteParaAtualizar);
-
-        return "redirect:/listacliente";
+    public String atualizarCliente(@PathVariable("id") Long id, @ModelAttribute ClienteDTO dto, RedirectAttributes attributes) {
+        try{
+            dto.setId(id);
+            service.update(id, dto);
+            attributes.addFlashAttribute(
+                    "mensagemSucesso",
+                    "Cliente Atualizado com sucesso");
+            return "redirect:/listacliente";
+        } catch (ResourcesNotFoundExceptions e) {
+            attributes.addFlashAttribute(
+                    "mensagemErro",
+                    "Erro ao atualizar: O cliente não foi encontrado no banco de dados.");
+            return "redirect:/listacliente";
+        } catch (Exception e) {
+            attributes.addFlashAttribute(
+                    "mensagemErro",
+                    "Erro inesperado ao salvar as alterações.");
+            return "redirect:/listacliente";
+        }
     }
 
     @GetMapping("/excluircliente/{id}")
-    public String excluirCliente(@PathVariable("id") Long id) {
-        if(!clienteRepository.existsById(id)){
-            throw new IllegalArgumentException("Cliente não encontrado "  + id);
+    public String excluirCliente(@PathVariable("id") Long id, RedirectAttributes attributes) {
+        try{
+            service.delete(id);
+            attributes.addFlashAttribute(
+                    "Mensagem Sucesso",
+                    "Id Excluido com sucesso ");
+        } catch (ResourcesNotFoundExceptions e) {
+            attributes.addFlashAttribute(
+                    "Mensagem Erro",
+                    "Erro ao excluir: Cliente com ID " + id + "não encontrado");
+        } catch (Exception e) {
+            attributes.addFlashAttribute(
+                    "Mensagem Erro",
+                    "Não foi possível excluir o cliente. Ele pode estar vinculado a outras tarefas.");
         }
-        clienteRepository.deleteById(id);
-
         return "redirect:/listacliente";
     }
 }

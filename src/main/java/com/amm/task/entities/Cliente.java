@@ -1,11 +1,7 @@
 package com.amm.task.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -35,10 +31,6 @@ public class Cliente implements Serializable {
         this.contato = contato;
         this.info = info;
         this.ativo = ativo;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public Long getId() {
