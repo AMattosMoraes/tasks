@@ -12,12 +12,19 @@ public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "cnpj")
     private String cnpj;
+    @Column(name = "nome")
     private String nome;
+    @Column(name = "uf")
     private String uf;
+    @Column(name = "contato")
     private String contato;
+    @Column(name = "info")
     private String info;
+    @Column(name = "ativo")
     private String ativo;
 
     public Cliente() {

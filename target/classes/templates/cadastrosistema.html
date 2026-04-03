@@ -42,16 +42,13 @@
 
 <div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
 
-
 <form id="frmCadastroSistema"
       th:action="@{/salvarsistema}"
       th:object="${sistema}"
       method="post"
       class="form-container border rounded shadow row g-2 needs-validation" novalidate>
 
-<!--    <h3></h3>-->
     <h2 class="mb-3"> Cadastro de Sistema </h2>
-<!--    <h3></h3>-->
 
     <!--Nome do Sistema-->
     <div class="col-md-6">

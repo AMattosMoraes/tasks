@@ -21,7 +21,7 @@ public class ClienteController {
     private ClienteService service;
 
     @Autowired
-    private ClienteMapper clienteMapper;
+    private ClienteMapper mapper;
 
     @GetMapping("/cadastrocliente")
     public String mostrarFormulario(Model model) {
@@ -42,6 +42,7 @@ public class ClienteController {
         model.addAttribute("listacliente", clientesPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", clientesPage.getTotalPages());
+        model.addAttribute("totalElements",clientesPage.getTotalElements());
         model.addAttribute("ativo", ativo);
 
         return "listacliente";

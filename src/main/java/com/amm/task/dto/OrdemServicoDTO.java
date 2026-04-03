@@ -30,57 +30,7 @@ public class OrdemServicoDTO {
     private LocalDateTime dtfinal;
     private LocalDateTime hrfinal;
 
-    public OrdemServicoDTO(){}
-
-    public OrdemServicoDTO(Long id, String ordemstatus, String setor, LocalDate dtcadastro, String cliente, String prioridade,
-                           Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo,
-                           String servico, String tiposervico, String analistaresp, String situacao, LocalDateTime dtinicio,
-                           LocalDateTime hrinicio, LocalDateTime dtfinal, LocalDateTime hrfinal) {
-        this.id = id;
-        this.ordemstatus = ordemstatus;
-        this.setor = setor;
-        this.dtcadastro = dtcadastro;
-        this.cliente = cliente;
-        this.prioridade = prioridade;
-        this.ordem = ordem;
-        this.sistema = sistema;
-        this.modulo = modulo;
-        this.responsavel = responsavel;
-        this.usuario = usuario;
-        this.titulo = titulo;
-        this.servico = servico;
-        this.tiposervico = tiposervico;
-        this.analistaresp = analistaresp;
-        this.situacao = situacao;
-        this.dtinicio = dtinicio;
-        this.hrinicio = hrinicio;
-        this.dtfinal = dtfinal;
-        this.hrfinal = hrfinal;
-    }
-
-    public static OrdemServicoDTO fromEntity(OrdemServico ordemServico){
-        return new OrdemServicoDTO(
-                ordemServico.getId(),
-                ordemServico.getOrdemstatus(),
-                ordemServico.getSetor(),
-                ordemServico.getDtcadastro(),
-                ordemServico.getCliente(),
-                ordemServico.getPrioridade(),
-                ordemServico.getOrdem(),
-                ordemServico.getSistema(),
-                ordemServico.getModulo(),
-                ordemServico.getResponsavel(),
-                ordemServico.getUsuario(),
-                ordemServico.getTitulo(),
-                ordemServico.getServico(),
-                ordemServico.getTiposervico(),
-                ordemServico.getAnalistaresp(),
-                ordemServico.getSituacao(),
-                ordemServico.getDtinicio(),
-                ordemServico.getHrinicio(),
-                ordemServico.getDtfinal(),
-                ordemServico.getHrfinal()
-        );
+    public OrdemServicoDTO(){
     }
 
     public Long getId() {
@@ -243,42 +193,4 @@ public class OrdemServicoDTO {
         this.hrfinal = hrfinal;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrdemServicoDTO that = (OrdemServicoDTO) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "OrdemServicoDTO{" +
-                "id=" + id +
-                ", ordemstatus='" + ordemstatus + '\'' +
-                ", setor='" + setor + '\'' +
-                ", dtcadastro=" + dtcadastro +
-                ", cliente='" + cliente + '\'' +
-                ", prioridade='" + prioridade + '\'' +
-                ", ordem=" + ordem +
-                ", sistema='" + sistema + '\'' +
-                ", modulo='" + modulo + '\'' +
-                ", responsavel='" + responsavel + '\'' +
-                ", usuario='" + usuario + '\'' +
-                ", titulo='" + titulo + '\'' +
-                ", servico='" + servico + '\'' +
-                ", tiposervico='" + tiposervico + '\'' +
-                ", analistaresp='" + analistaresp + '\'' +
-                ", situacao='" + situacao + '\'' +
-                ", dtinicio=" + dtinicio +
-                ", hrinicio=" + hrinicio +
-                ", dtfinal=" + dtfinal +
-                ", hrfinal=" + hrfinal +
-                '}';
-    }
 }

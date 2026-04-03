@@ -4,7 +4,9 @@ import com.amm.task.dto.ModuloDTO;
 import com.amm.task.dto.SistemaDTO;
 import com.amm.task.entities.Modulo;
 import com.amm.task.mapper.ModuloMapper;
+import com.amm.task.mapper.SistemaMapper;
 import com.amm.task.services.ModuloService;
+import com.amm.task.services.SistemaService;
 import com.amm.task.services.exceptions.ResourcesNotFoundExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,10 +23,17 @@ public class ModuloController {
     private ModuloService service;
 
     @Autowired
-    private ModuloMapper moduloMapper;
+    private ModuloMapper mapper;
+
+    @Autowired
+    private SistemaService sistemaService;
+
+    @Autowired
+    private SistemaMapper sistemaMapper;
 
     @GetMapping("/cadastromodulo")
     public String mostrarFormulario(Model model) {
+        model.addAttribute("sistema", sistemaService.listarTodos());
         model.addAttribute("modulo", new ModuloDTO());
         return "cadastromodulo";
     }
@@ -40,6 +49,7 @@ public class ModuloController {
         model.addAttribute("listamodulo", moduloPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", moduloPage.getTotalPages());
+        model.addAttribute("totalElements",moduloPage.getTotalElements());
 
         return "listamodulo";
     }

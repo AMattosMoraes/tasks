@@ -11,50 +11,60 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class SistemaService {
 
     @Autowired
-    private SistemaRepository sistemaRepository;
+    private SistemaRepository repository;
 
     @Autowired
-    private SistemaMapper sistemaMapper;
+    private SistemaMapper mapper;
 
     @Transactional(readOnly = true)
     public Page<SistemaDTO> findAll(Pageable pageable) {
-        Page<Sistema> page = sistemaRepository.findAll(pageable);
-        return page.map(sistemaMapper::toDto);
+        Page<Sistema> page = repository.findAll(pageable);
+        return page.map(mapper::toDto);
     }
 
     @Transactional(readOnly = true)
     public SistemaDTO findById(Long id) {
-        Sistema entity = sistemaRepository.findById(id)
+        Sistema entity = repository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
-        return sistemaMapper.toDto(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public SistemaDTO insert(SistemaDTO dto) {
-        Sistema entity = sistemaMapper.toEntity(dto);
-        entity = sistemaRepository.save(entity);
-        return sistemaMapper.toDto(entity);
+        Sistema entity = mapper.toEntity(dto);
+        entity = repository.save(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public SistemaDTO update(Long id, SistemaDTO dto) {
-        Sistema entity = sistemaRepository.findById(id)
+        Sistema entity = repository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
         entity.setNome(dto.getNome());
-        entity = sistemaRepository.save(entity);
-        return sistemaMapper.toDto(entity);
+        entity = repository.save(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public void delete(Long id) {
-        if (!sistemaRepository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new ResourcesNotFoundExceptions(id);
         }
-        sistemaRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
+    public List<SistemaDTO> listarTodos(){
+        List<Sistema> list = repository.findAll();
+        return list.stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

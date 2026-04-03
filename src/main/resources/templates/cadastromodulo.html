@@ -42,42 +42,52 @@
 
 <div th:insert="fragments/navbar_sec :: meu-navbar-sec"></div>
 
-<div class="container mt-5 mb-5 d-flex justify-content-between align-items-center">
-    <!-- Título -->
-    <h2 class="m-0"> Cadastro de Módulo </h2>
-
-    <div class="d-flex">
-        <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Salvar</button>
-        <button type="reset" class="btn btn-danger m-2"><i class="bi bi-x-circle m-2"></i> Limpar</button>
-        <a th:href="@{/listamodulo}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
-    </div>
-</div>
-
-
-<form th:action="@{/salvarmodulo}"
+<form id="frmCadastroModulo"
+      th:action="@{/salvarmodulo}"
       th:object="${modulo}"
       method="post"
       class="form-container border rounded shadow row g-2 needs-validation" novalidate>
 
+    <h2 class="mb-3"> Cadastro de Módulo </h2>
+
     <!--Nome do Sistema-->
     <div class="col-md-6">
-        <label for="descsistema" class="form-label">Sistema</label>
-        <select class="form-select" id="descsistema" name="descsistema" required>
+        <label for="descSistema" class="form-label">Sistema</label>
+        <select
+                id="descSistema"
+                th:field="*{descSistema}"
+                class="form-select"
+                required>
             <option value="" disabled selected>Selecione</option>
-            <option th:each="sistema : ${sistema}" th:text="${sistema.nome}"></option>
+                <option
+                    th:each="s : ${sistema}"
+                    th:value="${s.nome}"
+                    th:text="${s.nome}" >
+            </option>
         </select>
         <div class="invalid-feedback">Informe um Sistema.</div>
     </div>
 
     <!--Nome do Modulo-->
     <div class="col-md-6">
-        <label for="descmodulo" class="form-label">Modulo</label>
-        <input type="text" class="form-control" name="descmodulo" placeholder="Digite o nome do modulo"
-               maxlength="50"
-               required>
+        <label for="descModulo" class="form-label">Modulo</label>
+        <input
+                id="descModulo"
+                th:field="*{descModulo}"
+                type="text"
+                class="form-control"
+                placeholder="Digite o nome do modulo"
+                maxlength="50"
+                required>
         <div class="invalid-feedback">O campo não pode ficar em branco.</div>
     </div>
-    <h2></h2>
+
+    <div class="d-flex">
+        <button type="submit" class="btn btn-primary m-2"><i class="bi bi-save m-2"></i> Salvar</button>
+        <button type="reset" class="btn btn-danger m-2"><i class="bi bi-x-circle m-2"></i> Limpar</button>
+        <a th:href="@{/listamodulo}" class="btn btn-secondary m-2"><i class="bi bi-arrow-left m-2"></i> Voltar </a>
+    </div>
+
 </form>
 
 <!-- Rodapé -->

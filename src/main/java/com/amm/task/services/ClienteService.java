@@ -15,54 +15,54 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClienteService {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteRepository repository;
 
     @Autowired
-    private  ClienteMapper clienteMapper;
+    private  ClienteMapper mapper;
 
     @Transactional(readOnly = true)
     public Page<ClienteDTO> findAll(Pageable pageable, String ativo) {
         Page<Cliente> page;
         if(ativo != null && !ativo.isEmpty()){
-            page = clienteRepository.findByAtivo(ativo, pageable);
+            page = repository.findByAtivo(ativo, pageable);
         } else {
-            page = clienteRepository.findAll(pageable);
+            page = repository.findAll(pageable);
         }
 
-        return page.map(clienteMapper::toDto);
+        return page.map(mapper::toDto);
     }
 
     @Transactional(readOnly = true)
     public ClienteDTO findById(Long id) {
-        Cliente entity = clienteRepository.findById(id)
+        Cliente entity = repository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
-        return clienteMapper.toDto(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public ClienteDTO insert(ClienteDTO dto) {
-        Cliente entity = clienteMapper.toEntity(dto);
-        entity = clienteRepository.save(entity);
-        return clienteMapper.toDto(entity);
+        Cliente entity = mapper.toEntity(dto);
+        entity = repository.save(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public ClienteDTO update(Long id, ClienteDTO dto) {
-        Cliente entity = clienteRepository.findById(id)
+        Cliente entity = repository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundExceptions(id));
         entity.setAtivo(dto.getAtivo());
         entity.setInfo(dto.getInfo());
         entity.setContato(dto.getContato());
-        entity = clienteRepository.save(entity);
-        return clienteMapper.toDto(entity);
+        entity = repository.save(entity);
+        return mapper.toDto(entity);
     }
 
     @Transactional
     public void delete(Long id) {
-        if (!clienteRepository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new ResourcesNotFoundExceptions(id);
         }
-        clienteRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
 }

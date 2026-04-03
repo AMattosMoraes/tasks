@@ -137,41 +137,33 @@
             </tbody>
         </table>
 
-        <!-- Informação de páginas  -->
-        <span class="text-centermt-5 mb-5 "> Página
-            <span th:text="${currentPage + 1}"></span> de
-            <span th:text="${totalPages}"></span>
-        </span>
+        <div th:if="${totalPages > 0}">
+            <span class="text-muted small">
+                Mostrando página
+                    <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span>
+                    (<span th:text="${totalElements}"></span> registros no total)
+            </span>
 
-<!--        <div class="d-flex justify-content-center mt-4">-->
-        <div class="d-flex justify-content-center align-items-center mt-2">
-            <nav aria-label="Navegação de páginas">
-                <ul class="pagination pagination-sm">
+            <div class="d-flex justify-content-center align-items-center mt-2">
+                <nav aria-label="Navegação de páginas">
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/listacliente(page=${currentPage - 1})}">&laquo;</a>
+                        </li>
 
-                    <!-- Botão Anterior - ADICIONADO ativo=${ativo} -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{/listacliente(page=${currentPage - 1}, ativo=${ativo})}" aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i == currentPage} ? 'active'">
+                            <a class="page-link" th:href="@{/listacliente(page=${i})}" th:text="${i + 1}"></a>
+                        </li>
 
-                    <!-- Números das páginas - JÁ ESTAVA CORRETO -->
-                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                        th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/listacliente(page=${i}, ativo=${ativo})}" th:text="${i + 1}"></a>
-                    </li>
-
-                    <!-- Botão Próxima - CORRIGIDO page=${currentPage + 1} e ADICIONADO ativo=${ativo} -->
-                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                        <a class="page-link" th:href="@{/listacliente(page=${currentPage + 1}, ativo=${ativo})}" aria-label="Próxima">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/listacliente(page=${currentPage + 1})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-
-
+        
     </div>
 </div>
 

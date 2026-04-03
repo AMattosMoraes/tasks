@@ -109,10 +109,11 @@
         </table>
 
         <div th:if="${totalPages > 0}">
-        <span class="text-centermt-5 mb-5 "> Página
-            <span th:text="${currentPage + 1}"></span> de
-            <span th:text="${totalPages}"></span>
-        </span>
+            <span class="text-muted small">
+                Mostrando página
+                    <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span>
+                    (<span th:text="${totalElements}"></span> registros no total)
+            </span>
 
             <div class="d-flex justify-content-center align-items-center mt-2">
                 <nav aria-label="Navegação de páginas">

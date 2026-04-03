@@ -19,7 +19,7 @@ public class SistemaController {
     private SistemaService service;
 
     @Autowired
-    private SistemaMapper sistemaMapper;
+    private SistemaMapper mapper;
 
     @GetMapping("/cadastrosistema")
     public String mostrarFormulario(Model model) {
@@ -38,6 +38,7 @@ public class SistemaController {
         model.addAttribute("listasistema", sistemaPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", sistemaPage.getTotalPages());
+        model.addAttribute("totalElements",sistemaPage.getTotalElements());
 
         return "listasistema";
     }

@@ -17,38 +17,6 @@ public class ClienteDTO {
     public ClienteDTO() {
     }
 
-    public ClienteDTO(Long id, String cnpj, String nome, String uf, String contato, String info, String ativo) {
-        this.id = id;
-        this.cnpj = cnpj;
-        this.nome = nome;
-        this.uf = uf;
-        this.contato = contato;
-        this.info = info;
-        this.ativo = ativo;
-    }
-
-    public ClienteDTO(Cliente cliente){
-        this.id = cliente.getId();
-        this.cnpj = cliente.getCnpj();
-        this.nome = cliente.getNome();
-        this.uf = cliente.getUf();
-        this.contato = cliente.getContato();
-        this.info = cliente.getInfo();
-        this.ativo = cliente.getAtivo();
-    }
-
-    public static ClienteDTO fromEntity(Cliente cliente){
-        return new ClienteDTO(
-                cliente.getId(),
-                cliente.getCnpj(),
-                cliente.getNome(),
-                cliente.getUf(),
-                cliente.getContato(),
-                cliente.getInfo(),
-                cliente.getAtivo()
-        );
-    }
-
     public Long getId() {
         return id;
     }
@@ -105,29 +73,4 @@ public class ClienteDTO {
         this.ativo = ativo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ClienteDTO that = (ClienteDTO) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "ClienteDTO{" +
-                "id=" + id +
-                ", cnpj='" + cnpj + '\'' +
-                ", nome='" + nome + '\'' +
-                ", uf='" + uf + '\'' +
-                ", contato='" + contato + '\'' +
-                ", info='" + info + '\'' +
-                ", ativo='" + ativo + '\'' +
-                '}';
-    }
 }

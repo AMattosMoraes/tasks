@@ -1,8 +1,5 @@
 package com.amm.task.entities;
 
-import com.amm.task.entities.enums.OrdemPrioridade;
-import com.amm.task.entities.enums.OrdemStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,33 +16,54 @@ public class OrdemServico implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "ordemstatus")
     private String ordemstatus;
+    @Column(name = "setor")
     private String setor;
+    @Column(name = "dtcadastro")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dtcadastro;
+    @Column(name = "cliente")
     private String cliente;
+    @Column(name = "prioridade")
     private String prioridade;
+    @Column(name = "ordem")
     private Integer ordem;
+    @Column(name = "sistema")
     private String sistema;
+    @Column(name = "modulo")
     private String modulo;
+    @Column(name = "responsavel")
     private String responsavel;
+    @Column(name = "usuario")
     private String usuario;
+    @Column(name = "titulo")
     private String titulo;
+    @Column(name = "servico")
     private String servico;
+    @Column(name = "tiposervico")
     private String tiposervico;
+    @Column(name = "analistaresp")
     private String analistaresp;
+    @Column(name = "situacao")
     private String situacao;
+    @Column(name = "dtinicio")
     private LocalDateTime dtinicio;
+    @Column(name = "hrinicio")
     private LocalDateTime hrinicio;
+    @Column(name = "dtfinal")
     private LocalDateTime dtfinal;
+    @Column(name = "hrfinal")
     private LocalDateTime hrfinal;
 
-    public OrdemServico(){}
+    public OrdemServico() {
+    }
 
 
     public OrdemServico(Long id, String ordemstatus, String setor, LocalDate dtcadastro, String cliente, String prioridade,
-                        Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo,  String servico,
+                        Integer ordem, String sistema, String modulo, String responsavel, String usuario, String titulo, String servico,
                         String tiposervico, String analistaresp, String situacao, LocalDateTime dtinicio, LocalDateTime hrinicio,
                         LocalDateTime dtfinal, LocalDateTime hrfinal) {
         this.id = id;
